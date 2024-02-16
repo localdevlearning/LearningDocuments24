@@ -39,10 +39,8 @@
   <properties>
     <aem.host>localhost</aem.host>
     <aem.port>4502</aem.port>
-    <aem.ctxpath>/jpmcp-cm-a</aem.ctxpath>
     <aem.publish.host>localhost</aem.publish.host>
     <aem.publish.port>4503</aem.publish.port>
-    <aem.publish.ctxpath>/jpmcp-cm</aem.publish.ctxpath>
     <sling.user>admin</sling.user>
     <sling.password>admin</sling.password>
     <vault.user>admin</vault.user>
@@ -464,7 +462,7 @@ Bundle-DocURL:
               <groupId>org.apache.sling</groupId>
               <artifactId>sling-maven-plugin</artifactId>
               <configuration>
-                <slingUrl>http://${aem.host}:${aem.port}${aem.ctxpath}/system/console</slingUrl>
+                <slingUrl>http://${aem.host}:${aem.port}/system/console</slingUrl>
               </configuration>
               <executions>
                 <execution>
@@ -509,7 +507,7 @@ Bundle-DocURL:
                     <goal>install</goal>
                   </goals>
                   <configuration>
-                    <targetURL>http://${aem.host}:${aem.port}${aem.ctxpath}/crx/packmgr/service.jsp</targetURL>
+                    <targetURL>http://${aem.host}:${aem.port}/crx/packmgr/service.jsp</targetURL>
                   </configuration>
                 </execution>
               </executions>
@@ -536,7 +534,7 @@ Bundle-DocURL:
               <groupId>org.apache.sling</groupId>
               <artifactId>sling-maven-plugin</artifactId>
               <configuration>
-                <slingUrl>http://${aem.host}:${aem.port}${aem.publish.ctxpath}/system/console</slingUrl>
+                <slingUrl>http://${aem.host}:${aem.port}/system/console</slingUrl>
               </configuration>
               <executions>
                 <execution>
@@ -581,7 +579,7 @@ Bundle-DocURL:
                     <goal>install</goal>
                   </goals>
                   <configuration>
-                    <targetURL>http://${aem.publish.host}:${aem.publish.port}${aem.publish.ctxpath}/crx/packmgr/service.jsp</targetURL>
+                    <targetURL>http://${aem.publish.host}:${aem.publish.port}/crx/packmgr/service.jsp</targetURL>
                   </configuration>
                 </execution>
               </executions>
