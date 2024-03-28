@@ -1,0 +1,48 @@
+PS C:\WINDOWS\System32> # Function to check website availability
+function Check-WebsiteAvailability {
+  param(
+    [Parameter(Mandatory = $true, ValueFromPipeline)]
+    [string] $Url
+  )
+
+  $response = Invoke-WebRequest -Uri $Url -Method Get -UseBasicParsing
+
+  $statusCode = $response.StatusCode
+  $status = if ($statusCode -eq 200) { "Accessible" } else { "Unreachable" }
+
+  # Return an object with URL and Status (no StatusCode)
+  New-Object PSObject -Property @{
+    URL = $Url.Trim()
+    Status = $status
+  }
+}
+
+# Import URLs from the specified CSV file
+$csvPath = "C:\Users\Bhuwan Bhaskar\Documents\Downloads\urlsheet.csv"
+$urls = Import-Csv -Path $csvPath | Select-Object -ExpandProperty "URL"  
+
+# Check availability for each URL (retrying failed ones)
+foreach ($url in $urls) {
+  # Check twice for robustness
+  $check1 = Check-WebsiteAvailability -Url $url
+  $check2 = Check-WebsiteAvailability -Url $url
+
+  # If both checks fail, consider the URL unreachable
+  if ($check1.StatusCode -ne 200 -and $check2.StatusCode -ne 200) {
+    $result = $check2
+  } else {
+    # Use if statement for compatibility with older PowerShell versions
+    if ($check1.StatusCode -eq 200) {
+      $result = $check1
+    } else {
+      $result = $check2
+    }
+  }
+
+  if ($result.Status -eq "Accessible") {
+    Write-Host "$($result.URL) is $($result.Status)" -ForegroundColor Green
+  } else {
+    # Print failed URLs in red
+    Write-Host "$($result.URL) is $($result.Status)" -ForegroundColor Red
+  }
+}
